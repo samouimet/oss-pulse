@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: github
+    tables:
+      - name: repos
+        meta:
+          external_location: "read_json('../data/raw/repos/*/*/repo.json')"

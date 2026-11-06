@@ -1,0 +1,37 @@
+version: 2
+
+models:
+ - name: stg_github__repos
+   data_tests:
+    - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - repository_id
+              - snapshot_date
+   description: "One row per GitHub repository per daily snapshot"
+   columns:
+      - name: repository_id
+        description: "GitHub’s numeric repository id; part of the primary key"
+        data_tests:
+          - not_null
+      - name: owner_actor_id
+        description: "A foreign key for this table"
+        data_tests:
+          - not_null
+      - name: snapshot_date
+        description: "Date the repository data was pulled"
+        data_tests:
+          - not_null
+      - name: stargazers_count
+        description: "Number of times the repo has been starred"
+        data_tests:
+          - not_null
+      - name: forks_count
+        description: "Number of times the repo has been forked"
+        data_tests:
+          - not_null
+      - name: open_issues_count
+        description: "Number open issues for the repo"
+        data_tests:
+          - not_null
+      
