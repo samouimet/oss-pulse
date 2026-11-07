@@ -6,3 +6,6 @@ sources:
       - name: repos
         meta:
           external_location: "read_json('../data/raw/repos/*/*/repo.json')"
+      - name: issues
+        meta:
+          external_location: "read_json('../data/raw/issues/*/*/*.json')"
