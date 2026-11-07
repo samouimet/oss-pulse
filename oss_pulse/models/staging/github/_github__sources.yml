@@ -12,3 +12,6 @@ sources:
       - name: pull_requests
         meta:
           external_location: "read_json('../data/raw/pull_requests/*/*/*.json')"
+      - name: issue_comments
+        meta:
+          external_location: "read_json('../data/raw/issue_comments/*/*/*.json')"          
