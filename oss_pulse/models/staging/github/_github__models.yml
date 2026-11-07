@@ -126,5 +126,36 @@ models:
         data_tests:
           - not_null
 
-      
-    
+
+ - name: stg_github__issue_comments
+   description: "One row per issue or pull request comment per snapshot date, from the GitHub issues comments endpoint"
+   data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - comment_id
+              - snapshot_date
+   columns:
+      - name: comment_id
+        description: "GitHub's numeric comment id"
+        data_tests:
+          - not_null
+      - name: author_actor_id
+        description: "GitHub's numeric id of the user who wrote the comment"
+        data_tests:
+          - not_null
+      - name: issue_url
+        description: "API URL of the issue or pull request the comment belongs to; used later to find the parent"
+        data_tests:
+          - not_null
+      - name: created_at
+        description: "When the comment was created"
+        data_tests:
+          - not_null
+      - name: html_url
+        description: "Web link to the comment on GitHub"
+      - name: snapshot_date
+        description: "Date the comment data was pulled"
+        data_tests:
+          - not_null      
+  
