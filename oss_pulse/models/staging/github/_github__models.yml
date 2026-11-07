@@ -34,4 +34,50 @@ models:
         description: "Number open issues for the repo"
         data_tests:
           - not_null
+
+ - name: stg_github__issues
+   data_tests:
+    - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - issue_id
+              - snapshot_date
+   description: "One row per GitHub issue per daily snapshot"
+   columns:
+      - name: issue_id
+        description: "GitHub's numeric issue id"
+        data_tests:
+          - not_null
+      - name: number
+        description: "Issue number within the repository"
+        data_tests:
+          - not_null
+      - name: state
+        description: "Issue state: open or closed"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['open', 'closed']
+      - name: created_at
+        description: "When the issue was created"
+        data_tests:
+          - not_null
+      - name: opened_by_actor_id
+        description: "GitHub's numeric id of the user who opened the issue"
+        data_tests:
+          - not_null
+      - name: snapshot_date
+        description: "Date the issue data was pulled"
+        data_tests:
+          - not_null
+      - name: is_pull_request
+        description: "True when the row is a pull request returned by the issues endpoint"
+        data_tests:
+          - not_null
+      - name: repository_url
+        description: "API URL of the repository; join key to the repos table"
+        data_tests:
+          - not_null
       
+    
