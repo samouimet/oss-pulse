@@ -224,3 +224,4 @@ data/raw/
 # Duckdb
 *.duckdb
 *.duckdb.wal
+.vscode/
