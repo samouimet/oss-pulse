@@ -9,3 +9,6 @@ sources:
       - name: issues
         meta:
           external_location: "read_json('../data/raw/issues/*/*/*.json')"
+      - name: pull_requests
+        meta:
+          external_location: "read_json('../data/raw/pull_requests/*/*/*.json')"
