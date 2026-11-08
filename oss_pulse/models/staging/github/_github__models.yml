@@ -199,3 +199,33 @@ models:
         description: "Date the review data was pulled"
         data_tests:
           - not_null
+
+# --- Commits
+
+ - name: stg_github__commits
+   description: "One row per commit per snapshot date, from the GitHub commits endpoint"
+   data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - commit_sha
+              - snapshot_date
+   columns:
+      - name: commit_sha
+        description: "Git SHA that identifies the commit"
+        data_tests:
+          - not_null
+      - name: author_actor_id
+        description: "GitHub's numeric id of the commit author; null when the commit email doesn't match a GitHub account"
+      - name: repository_url
+        description: "API URL of the repository the commit belongs to; join key to the repos table"
+        data_tests:
+          - not_null
+      - name: authored_at
+        description: "When the commit was authored"
+        data_tests:
+          - not_null
+      - name: snapshot_date
+        description: "Date the commit data was pulled"
+        data_tests:
+          - not_null
