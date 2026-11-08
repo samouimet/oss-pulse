@@ -1,5 +1,7 @@
 version: 2
 
+
+# --- Repos
 models:
  - name: stg_github__repos
    data_tests:
@@ -35,6 +37,7 @@ models:
         data_tests:
           - not_null
 
+# --- Issues
  - name: stg_github__issues
    data_tests:
     - dbt_utils.unique_combination_of_columns:
@@ -80,7 +83,7 @@ models:
         data_tests:
           - not_null
 
-
+# --- Pull Requests
  - name: stg_github__pull_requests
    description: "One row per pull request per snapshot date, from the GitHub pulls endpoint"
    data_tests:
@@ -126,7 +129,7 @@ models:
         data_tests:
           - not_null
 
-
+# --- Issue Comments
  - name: stg_github__issue_comments
    description: "One row per issue or pull request comment per snapshot date, from the GitHub issues comments endpoint"
    data_tests:
@@ -159,3 +162,40 @@ models:
         data_tests:
           - not_null      
   
+# --- Reviews
+ - name: stg_github__reviews
+   description: "One row per pull request review per snapshot date, from the GitHub pull request reviews endpoint"
+   data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - review_id
+              - snapshot_date
+   columns:
+      - name: review_id
+        description: "GitHub's numeric review id"
+        data_tests:
+          - not_null
+      - name: pull_request_number
+        description: "Number of the pull request the review belongs to, within its repository"
+        data_tests:
+          - not_null
+      - name: pull_request_url
+        description: "API URL of the pull request the review belongs to; includes the repository"
+        data_tests:
+          - not_null
+      - name: submitted_by_actor_id
+        description: "GitHub's numeric id of the user who submitted the review"
+        data_tests:
+          - not_null
+      - name: state
+        description: "Review state: COMMENTED, APPROVED, DISMISSED, or CHANGES_REQUESTED"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['COMMENTED', 'APPROVED', 'DISMISSED', 'CHANGES_REQUESTED']
+      - name: snapshot_date
+        description: "Date the review data was pulled"
+        data_tests:
+          - not_null
