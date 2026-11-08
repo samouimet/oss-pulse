@@ -229,3 +229,37 @@ models:
         description: "Date the commit data was pulled"
         data_tests:
           - not_null
+
+
+# --- Releases
+ - name: stg_github__releases
+   description: "One row per release per snapshot date, from the GitHub releases endpoint"
+   data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - release_id
+              - snapshot_date
+   columns:
+      - name: release_id
+        description: "GitHub's numeric release id"
+        data_tests:
+          - not_null
+      - name: repository_url
+        description: "API URL of the repository the release belongs to; join key to the repos table"
+        data_tests:
+          - not_null
+      - name: tag_name
+        description: "Git tag the release is attached to, such as v2.0.8"
+        data_tests:
+          - not_null
+      - name: created_at
+        description: "When the release was created"
+        data_tests:
+          - not_null
+      - name: published_at
+        description: "When the release was published; null for drafts"
+      - name: snapshot_date
+        description: "Date the release data was pulled"
+        data_tests:
+          - not_null

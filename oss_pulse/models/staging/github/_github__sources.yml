@@ -21,3 +21,6 @@ sources:
       - name: commits
         meta:
           external_location: "read_json('../data/raw/commits/*/*/*.json')"   
+      - name: releases
+        meta:
+          external_location: "read_json('../data/raw/releases/*/*/*.json')"   
