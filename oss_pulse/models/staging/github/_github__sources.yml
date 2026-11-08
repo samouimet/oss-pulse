@@ -18,3 +18,6 @@ sources:
       - name: reviews
         meta:
           external_location: "read_json('../data/raw/reviews/*/*/*.json')"   
+      - name: commits
+        meta:
+          external_location: "read_json('../data/raw/commits/*/*/*.json')"   
