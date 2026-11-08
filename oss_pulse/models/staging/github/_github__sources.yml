@@ -15,3 +15,6 @@ sources:
       - name: issue_comments
         meta:
           external_location: "read_json('../data/raw/issue_comments/*/*/*.json')"          
+      - name: reviews
+        meta:
+          external_location: "read_json('../data/raw/reviews/*/*/*.json')"   
