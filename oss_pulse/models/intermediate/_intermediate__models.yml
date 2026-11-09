@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: int_actors_unioned
+    description: "One row per actor per snapshot date"
+    columns:
+    - name: actor_id
+      data_tests: 
+      - not_null
+    - name: snapshot_date
+      data_tests:
+      - not_null

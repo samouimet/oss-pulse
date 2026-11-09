@@ -2,6 +2,8 @@ select
 
     cast(data.id as BIGINT) as repository_id,
     cast(data.owner.id as BIGINT) as owner_actor_id,
+    cast(data.owner.login as VARCHAR) as owner_actor_login,
+    cast(data.owner.type as VARCHAR) as owner_actor_type,
     cast(data.name as VARCHAR) as name,
     cast(data.created_at as TIMESTAMP) as created_at,
     cast(data.updated_at as TIMESTAMP) as updated_at,
