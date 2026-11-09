@@ -1,6 +1,8 @@
 version: 2
 
 models:
+
+# --- Repository
  - name: dim_repository
    description: "One row per GitHub repository"
    columns:
@@ -13,6 +15,10 @@ models:
         description: "A foreign key for this table"
         data_tests:
           - not_null
+        relationships:
+          to: ref('dim_actor')
+          field: 'actor_id'
+        
  - name: fct_repository_daily
    data_tests:
     - dbt_utils.unique_combination_of_columns:
@@ -28,5 +34,25 @@ models:
           - not_null
       - name: snapshot_date
         description: "Date the repository data was pulled; second part of the primary key"
+        data_tests:
+          - not_null
+
+# --- Actors
+ - name: dim_actor
+   description: "One row per GitHub actor"
+   columns:
+      - name: login
+        description: "Most recent GitHub username for the actor"
+        data_tests:
+          - not_null
+      - name: type
+        description: "Account type: User, Bot, or Organization"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['User', 'Bot', 'Organization']
+      - name: is_bot
+        description: "True when the actor's type is Bot"
         data_tests:
           - not_null
