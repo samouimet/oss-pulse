@@ -7,7 +7,9 @@ select
     pushed_at,
     default_branch,
     archived
-    
+
 from {{ ref('stg_github__repos') }}
 
-qualify row_number() over (partition by repository_id order by snapshot_date desc) = 1
+qualify
+    row_number() over (partition by repository_id order by snapshot_date desc)
+    = 1
