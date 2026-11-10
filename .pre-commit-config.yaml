@@ -1,0 +1,6 @@
+repos:
+  - repo: https://github.com/sqlfluff/sqlfluff   # where the hook definition lives
+    rev: 4.5.0                                   # same version as requirements.txt
+    hooks:
+      - id: sqlfluff-fix                         # official hook id: runs `sqlfluff fix` on staged files
+        files: ^oss_pulse/models/.*\.sql$        # only your model files, so dbt_packages is skipped
