@@ -7,17 +7,17 @@ with repo_mapping as (
 )
 
 select
-    issue_id,
-    repository_id,
-    opened_by_actor_id,
-    closed_by_actor_id,
-    state,
-    created_at,
-    updated_at,
-    closed_at,
-    number,
-    snapshot_date,
-    reactions_total_count,
+    sgi.issue_id,
+    sgi.repository_id,
+    sgi.opened_by_actor_id,
+    sgi.closed_by_actor_id,
+    sgi.state,
+    sgi.created_at,
+    sgi.updated_at,
+    sgi.closed_at,
+    sgi.number,
+    sgi.snapshot_date,
+    sgi.reactions_total_count,
     sgi.repository_url
 
 from {{ ref('stg_github__issues') }} as sgi
