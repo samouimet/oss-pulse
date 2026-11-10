@@ -26,3 +26,16 @@ models:
     - name: repository_id
       data_tests:
       - not_null
+
+  - name: int_issues_first_response
+    description: "One row per issue that has received a response; the first comment from a non-author, non-bot user"
+    columns:
+    - name: issue_id
+      description: "GitHub's numeric issue id; one row per issue"
+      data_tests:
+      - not_null
+      - unique
+    - name: first_response_at
+      description: "Time of the first qualifying comment"
+      data_tests:
+      - not_null

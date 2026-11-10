@@ -17,7 +17,8 @@ select
     closed_at, 
     number, 
     snapshot_date, 
-    reactions_total_count
+    reactions_total_count,
+    sgi.repository_url
 
 from {{ ref('stg_github__issues') }} as sgi
 inner join repo_mapping as rm 
