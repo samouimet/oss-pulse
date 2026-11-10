@@ -1,7 +1,7 @@
 select
 
     cast(data.id as BIGINT) as repository_id,
-    cast(data.url as VARCHAR) repository_url,
+    cast(data.url as VARCHAR) as repository_url,
     cast(data.owner.id as BIGINT) as owner_actor_id,
     cast(data.owner.login as VARCHAR) as owner_actor_login,
     cast(data.owner.type as VARCHAR) as owner_actor_type,
