@@ -39,3 +39,14 @@ models:
       description: "Time of the first qualifying comment"
       data_tests:
       - not_null
+
+  - name: int_pull_requests_first_review
+    description: "One row per pull request that has received a review. Includes the review time of the first review from a non-opener, non-bot user"
+    columns:
+      - name: pull_request_id
+        data_tests:
+          - unique
+          - not_null
+      - name: first_review_at
+        data_tests:
+          - not_null
