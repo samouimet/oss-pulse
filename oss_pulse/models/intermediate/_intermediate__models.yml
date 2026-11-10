@@ -2,11 +2,40 @@ version: 2
 
 models:
   - name: int_actors_unioned
-    description: "One row per actor per snapshot date"
+    description: "One row per actor appearance across all sources"
     columns:
     - name: actor_id
       data_tests: 
       - not_null
     - name: snapshot_date
+      data_tests:
+      - not_null
+      
+  - name: int_issues_joined
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - issue_id
+              - snapshot_date
+    description: "One row per issue per snapshot date; pull requests excluded"
+    columns:
+    - name: issue_id
+      data_tests: 
+      - not_null
+    - name: repository_id
+      data_tests:
+      - not_null
+
+  - name: int_issues_first_response
+    description: "One row per issue that has received a response; the first comment from a non-author, non-bot user"
+    columns:
+    - name: issue_id
+      description: "GitHub's numeric issue id; one row per issue"
+      data_tests:
+      - not_null
+      - unique
+    - name: first_response_at
+      description: "Time of the first qualifying comment"
       data_tests:
       - not_null
