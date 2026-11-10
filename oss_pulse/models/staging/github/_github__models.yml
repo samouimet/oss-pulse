@@ -128,6 +128,14 @@ models:
         description: "Date the pull request data was pulled"
         data_tests:
           - not_null
+      - name: repository_id
+        description: "Github's numeric repository id"
+        data_tests:
+          - not_null
+      - name: pull_request_url
+        description: "URL assigned to the pulled request"
+        data_tests:
+          - not_null
 
 # --- Issue Comments
  - name: stg_github__issue_comments
