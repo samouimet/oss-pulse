@@ -12,4 +12,4 @@ where
     and
     c.author_actor_type != 'Bot'
 
-qualify ROW_NUMBER() over (partition by a.issue_id order by c.created_at) = 1
+qualify ROW_NUMBER() over (partition by i.issue_id order by c.created_at) = 1

@@ -8,7 +8,7 @@ with repo_mapping as (
 
 select
     sgi.issue_id,
-    sgi.repository_id,
+    rm.repository_id,
     sgi.opened_by_actor_id,
     sgi.closed_by_actor_id,
     sgi.state,
@@ -24,4 +24,4 @@ from {{ ref('stg_github__issues') }} as sgi
 inner join repo_mapping as rm
     on sgi.repository_url = rm.repository_url
 
-where is_pull_request = FALSE
+where sgi.is_pull_request = FALSE

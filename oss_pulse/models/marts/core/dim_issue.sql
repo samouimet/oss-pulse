@@ -16,4 +16,6 @@ left join {{ ref('int_issues_first_response') }} as b
     on a.issue_id = b.issue_id
 
 qualify
-    row_number() over (partition by a.issue_id order by a.snapshot_date desc) = 1
+    row_number() over (
+        partition by a.issue_id order by a.snapshot_date desc
+    ) = 1
