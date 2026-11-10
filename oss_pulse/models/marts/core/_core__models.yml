@@ -56,3 +56,79 @@ models:
         description: "True when the actor's type is Bot"
         data_tests:
           - not_null
+
+# --- Issues
+ - name: dim_issue
+   description: "One row per GitHub issue (pull requests excluded), latest version"
+   columns:
+      - name: issue_id
+        description: "GitHub's numeric issue id; primary key"
+        data_tests:
+          - not_null
+          - unique
+      - name: opened_by_actor_id
+        description: "Foreign key to dim_actor; the user who opened the issue"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_actor')
+                field: actor_id
+      - name: closed_by_actor_id
+        description: "Foreign key to dim_actor; the user who closed the issue, null while open"
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_actor')
+                field: actor_id
+      - name: repository_id
+        description: "Foreign key to dim_repository"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_repository')
+                field: repository_id
+      - name: state
+        description: "Issue state: open or closed"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['open', 'closed']
+      - name: created_at
+        description: "When the issue was created"
+        data_tests:
+          - not_null
+      - name: number
+        description: "Issue number within its repository"
+        data_tests:
+          - not_null
+      - name: first_response_at
+        description: "Time of the first comment by a non-author, non-bot user; null if no response yet"
+
+ - name: fct_issue_daily
+   description: "One row per issue per snapshot date"
+   data_tests:
+    - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - issue_id
+              - snapshot_date
+   columns:
+      - name: issue_id
+        description: "Foreign key to dim_issue; one part of the primary key"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_issue')
+                field: issue_id
+      - name: snapshot_date
+        description: "Date the issue data was pulled; second part of the primary key"
+        data_tests:
+          - not_null
+      - name: reactions_total_count
+        description: "Total reactions on the issue on that date"
+        data_tests:
+          - not_null
