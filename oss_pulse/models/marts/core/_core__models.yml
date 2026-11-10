@@ -132,3 +132,29 @@ models:
         description: "Total reactions on the issue on that date"
         data_tests:
           - not_null
+
+# --- Pull request
+ - name: dim_pull_request
+   columns:
+      - name: pull_request_id
+        data_tests:
+          - unique
+          - not_null
+      - name: repository_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_repository')
+                field: repository_id
+      - name: opened_by_actor_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_actor')
+                field: actor_id
+      - name: state
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['open', 'closed']
