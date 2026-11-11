@@ -216,3 +216,33 @@ models:
       - name: reactions_total_count
         data_tests:
           - not_null
+          
+# --- Review
+ - name: dim_review
+   description: "One row per pull request review, latest version."
+   columns:
+      - name: review_id
+        data_tests:
+          - unique
+          - not_null
+      - name: pull_request_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_pull_request')
+                field: pull_request_id
+      - name: submitted_by_actor_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_actor')
+                field: actor_id
+      - name: state
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['APPROVED', 'CHANGES_REQUESTED', 'COMMENTED', 'DISMISSED', 'PENDING']
+      - name: submitted_at
+        data_tests:
+          - not_null
