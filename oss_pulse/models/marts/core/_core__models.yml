@@ -246,3 +246,29 @@ models:
       - name: submitted_at
         data_tests:
           - not_null
+
+# --- Commit
+
+ - name: dim_commit
+   description: "One row per commit, latest version."
+   columns:
+      - name: commit_sha
+        data_tests:
+          - unique
+          - not_null
+      - name: repository_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_repository')
+                field: repository_id
+      - name: author_actor_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_actor')
+                field: actor_id
+      - name: authored_at
+        data_tests:
+          - not_null
