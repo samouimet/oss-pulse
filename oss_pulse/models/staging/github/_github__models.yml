@@ -82,6 +82,11 @@ models:
         description: "API URL of the repository; join key to the repos table"
         data_tests:
           - not_null
+      - name: issue_url
+        description: "URL of the individual issue; join key to the comments table"
+        data_tests:
+          - not_null
+      
 
 # --- Pull Requests
  - name: stg_github__pull_requests
@@ -136,6 +141,11 @@ models:
         description: "URL assigned to the pulled request"
         data_tests:
           - not_null
+      - name: issue_url
+        description: "URL assigned to the pull request issue"
+        data_tests:
+          - not_null
+
 
 # --- Issue Comments
  - name: stg_github__issue_comments

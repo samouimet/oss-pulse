@@ -12,6 +12,7 @@ select
     cast(pull_request.user.id as BIGINT) as opened_by_actor_id,
     cast(pull_request.url as VARCHAR) as pull_request_url,
     cast(pull_request.base.repo.url as VARCHAR) as repository_url,
+    cast(pull_request.issue_url as VARCHAR) as issue_url,
     cast(pull_request.base.repo.id as BIGINT) as repository_id,
     cast(pull_request.state as VARCHAR) as state,
     cast(pull_request.created_at as TIMESTAMP) as created_at,
