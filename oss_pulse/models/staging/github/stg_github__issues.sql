@@ -24,6 +24,7 @@ select
     cast(
         coalesce(issue.pull_request is not null, false) as BOOLEAN
     ) as is_pull_request,
-    cast(issue.repository_url as VARCHAR) as repository_url
+    cast(issue.repository_url as VARCHAR) as repository_url,
+    cast(issue.url as VARCHAR) as issue_url
 
 from issues
