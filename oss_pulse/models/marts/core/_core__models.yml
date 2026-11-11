@@ -272,3 +272,34 @@ models:
       - name: authored_at
         data_tests:
           - not_null
+
+# --- Release
+ - name: dim_release
+   description: "One row per release, latest version."
+   columns:
+      - name: release_id
+        data_tests:
+          - unique
+          - not_null
+      - name: repository_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_repository')
+                field: repository_id
+      - name: published_by_actor_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_actor')
+                field: actor_id
+      - name: tag_name
+        data_tests:
+          - not_null
+      - name: draft
+        data_tests:
+          - not_null
+      - name: prerelease
+        data_tests:
+          - not_null
