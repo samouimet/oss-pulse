@@ -1,0 +1,7 @@
+services:                      
+  scheduler:                   
+    volumes:                   
+      # format: <folder on your Mac>:<where it appears in the container>
+      - ../ingestion:/usr/local/airflow/ingestion
+      - ../oss_pulse:/usr/local/airflow/oss_pulse
+      - ../data:/usr/local/airflow/data
