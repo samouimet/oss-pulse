@@ -3,3 +3,4 @@ dbt-duckdb==1.11.1
 requests==2.34.2
 sqlfluff==4.5.0
 pre_commit==4.7.0
+sqlfluff-templater-dbt==4.5.0
