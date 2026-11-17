@@ -303,3 +303,43 @@ models:
       - name: prerelease
         data_tests:
           - not_null
+
+          
+ - name: dim_month
+   description: "Calendar of months, one row per month, used as a spine."
+   data_tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "cast(date_trunc('month', date_month) as date) = date_month"
+   columns:
+      - name: date_month
+        description: "First day of the month. Spine range starts at a fixed early date and runs to the current month."
+        data_tests:
+          - unique
+          - not_null
+
+
+ - name: dim_repository_month
+   description: "One row per repository per month, from the repository's first active month to the month of the latest data fetch. Used as the base table that metric tables join onto, so months with no activity still get a row."
+   data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - repository_id
+              - activity_month
+   columns:
+      - name: repository_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_repository')
+                field: repository_id
+      - name: activity_month
+        description: "First day of the month (UTC)."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_month')
+                field: date_month
