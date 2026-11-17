@@ -86,3 +86,43 @@ models:
               arguments:
                 to: ref('dim_repository')
                 field: repository_id
+
+
+  - name: int_contributor_monthly
+    description: "One row per contributor per repository per month in which they had any activity, with a count for each activity type. A month with no activity has no row. Bots and unmatched authors are already excluded upstream."
+    data_tests:
+      # grain test: one row per (repo, actor, month)
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - repository_id
+              - actor_id
+              - activity_month
+      # cross-check: the total must equal the six per-type counts added up,
+      # so a new activity type upstream can't slip through uncounted
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "total_activities = comment_count + commit_count + review_count + issue_opened_count + issue_closed_count + pull_request_opened_count"
+    columns:
+      - name: activity_month
+        description: "First day of the month (UTC) the activity happened in."
+        data_tests:
+          - not_null
+      - name: repository_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_repository')
+                field: repository_id
+      - name: actor_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_actor')
+                field: actor_id
+      - name: total_activities
+        description: "Count of all activities in the month, across every type."
+        data_tests:
+          - not_null
