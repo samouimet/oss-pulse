@@ -126,3 +126,40 @@ models:
         description: "Count of all activities in the month, across every type."
         data_tests:
           - not_null
+
+
+  - name: int_contributor_status_monthly
+    description: "One row per contributor per repository per month with a growth-accounting status: new, retained, resurrected or churned. Churned rows are created for the month after a contributor's last active month, so they have no matching row in int_contributor_monthly."
+    data_tests:
+      # grain test: one status per (repo, actor, month)
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - repository_id
+              - actor_id
+              - activity_month
+    columns:
+      - name: repository_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_repository')
+                field: repository_id
+      - name: actor_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_actor')
+                field: actor_id
+      - name: activity_month
+        description: "First day of the month (UTC). For churned rows, the month after the last active month."
+        data_tests:
+          - not_null
+      - name: status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['new', 'retained', 'resurrected', 'churned']
