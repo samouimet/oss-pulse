@@ -17,14 +17,13 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Lint SQL
-        working-directory: oss_pulse
-        run: sqlfluff lint models
-
       - name: Install dbt packages
         working-directory: oss_pulse
         run: dbt deps
 
+      - name: Lint SQL
+        run: sqlfluff lint oss_pulse/models
+        
       - name: Parse dbt project
         working-directory: oss_pulse
         run: dbt parse --target ci
