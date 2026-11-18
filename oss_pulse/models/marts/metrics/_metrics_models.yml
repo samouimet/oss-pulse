@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: fct_contributor_growth_monthly
+    description: "One row per repository per month with growth accounting for contributors: counts of new, retained, resurrected and churned contributors, the active total, and retention and quick ratios. Ratios are plain decimals and are null when undefined (zero denominator). The latest month is partial and flagged."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - repository_id
+              - activity_month
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "active_count = new_count + retained_count + resurrected_count"
+    columns:
+      - name: repository_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_repository')
+                field: repository_id
+      - name: activity_month
+        description: "First day of the month (UTC)."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_month')
+                field: date_month
+      - name: new_count
+        data_tests:
+          - not_null
+      - name: retained_count
+        data_tests:
+          - not_null
+      - name: churned_count
+        data_tests:
+          - not_null
+      - name: resurrected_count
+        data_tests:
+          - not_null
+      - name: active_count
+        description: "Contributors active this month: new + retained + resurrected."
+        data_tests:
+          - not_null
+      - name: retention_ratio
+        description: "retained / (retained + churned): the share of last month's active contributors who are still active. 0 to 1, null when no one was active the month before."
+        data_tests:
+          # column-level: dbt puts the column name in front of this expression
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "between 0 and 1"
+      - name: quick_ratio
+        description: "(new + resurrected) / churned. Above 1 means more arrive than leave. Null when no one churned."
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      - name: current_partial_month
+        description: "True for the latest month, which is still in progress and understates activity."
+        data_tests:
+          - not_null
